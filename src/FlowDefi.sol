@@ -36,26 +36,53 @@ abstract contract WaterObserver {
     }
 }
 
-/// @notice A water body is a collection of waters.
-struct WaterBody {
-    Water[] waters;
+abstract contract WaterHandler {
+    function getWater(Water calldata water) public view returns (Water memory) {
+        return water;
+    }
 }
 
+contract Pool is WaterHandler {
+    Water waterType;
+}
+
+contract Continent is WaterHandler {
+    Pool[] pools;
+}
+
+// /// @notice A water body is a collection of waters.
+// struct WaterBody {
+//     Water[] waters;
+// }
+
 /// @notice A glacier is a waterbody of recognized waters.
-contract Glacier {
-    WaterBody recognizedWaters;
+contract Glacier is WaterHandler {
+    Water[] recognizedWaters;
+    Continent[] supportedContinents;
 }
 
 /// @notice An ocean is a waterbody of unrecognized waters.
-contract Ocean {
-    WaterBody unrecognizedWaters;
+contract Ocean is WaterHandler {
+    Water[] unrecognizedWaters;
+    Continent[] supportedContinents;
 }
 
-// Pool {
-//     BankArea; // lp tokens
-//     Volume; // value
-//     water; // any flavor
-// }
+struct Heat {
+    address heatToken;
+}
+
+enum StateChange {
+    melted,
+    flowed,
+    evaporated,
+    condensed
+}
+
+abstract contract Stream {
+    function _changeState(Heat calldata heat) public payable returns (StateChange){
+        return StateChange.melted;
+    }
+}
 
 // snowmelt() // accept 'heat' to melt water in glacier to form 'river' stream
 // seep&flow() // seep 'river' streams into various pools & generate bank area lp tokens
