@@ -1,3 +1,3 @@
 # flowdefi
 
-[this is a placeholder; dapp under contruction]
+[this is a placeholder; dapp under construction]
